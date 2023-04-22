@@ -6,7 +6,7 @@ resource "google_compute_network" "vpc_network" {
 }
 resource "google_compute_subnetwork" "test_subnetwork" {
   project       = "pj-project-374418"
-  name          = "test-subnetwork"
+  name          = "vpctest-subnetwork"
   network       = google_compute_network.vpc_network.name
   ip_cidr_range = "10.0.0.0/22"
   region        = "us-central1"
