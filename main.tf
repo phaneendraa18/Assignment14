@@ -1,7 +1,7 @@
-variables "project"{
+variable "project"{
 }
 
-variables "network"{
+variable "network"{
 }
 
 variable "subnetwork"{
