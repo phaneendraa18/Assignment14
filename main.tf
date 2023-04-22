@@ -1,22 +1,47 @@
+variables "project"{
+}
+
+variables "network"{
+}
+
+variable "subnetwork"{
+}
+
+variable "vm_count"{
+}
+
+variable "ip_subnet_cidr_range"{
+}
+
+variable "vm_machine_type"{
+}
+
+variable "region"{
+}
+
+variable "zone"{
+}
+
+
 resource "google_compute_network" "vpc_network" {
-  project                 = "pj-project-374418"
-  name                    = "vpc-test-network"
+  project                 = var.project
+  name                    = var.network
   auto_create_subnetworks = false
   mtu                     = 1460
 }
 resource "google_compute_subnetwork" "test_subnetwork" {
-  project       = "pj-project-374418"
-  name          = "vpctest-subnetwork"
+  project       = var.project
+  name          = var.subnetwork
   network       = google_compute_network.vpc_network.name
-  ip_cidr_range = "10.0.0.0/22"
-  region        = "us-central1"
+  ip_cidr_range = var.ip_subnet_cidr_range
+  region        = var.region
 }
 resource "google_compute_instance" "default" {
-  project      = "pj-project-374418"
-  count        = 2
+  project      = var.project
+  count        = vm_count
   name         = "tf-vm-${count.index}"
-  machine_type = "e2-medium"
-  zone         = "us-central1-a"
+  machine_type = var.vm_machine_type
+  zone         = var.zone
 
   tags = ["fire1"]
 
@@ -32,7 +57,7 @@ resource "google_compute_instance" "default" {
   network_interface {
     network = google_compute_network.vpc_network.name
     subnetwork = google_compute_subnetwork.test_subnetwork.name
-    subnetwork_project = "pj-project-374418"
+    subnetwork_project = var.project
     access_config {
       // Ephemeral public IP
     }
